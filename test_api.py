@@ -99,5 +99,5 @@ if __name__ == "__main__":
     task_id_to_complete = test_create_task()
     test_get_all_tasks()
     test_complete_task(task_id_to_complete)
-    test_get_all_tasks()  # Проверяем, что задача теперь isDone=true
+    test_get_all_tasks()  # Проверяю, что задача теперь isDone=true
     test_complete_nonexistent_task()
