@@ -4,12 +4,9 @@ import os
 
 app = Flask(__name__)
 
-
 TASKS_FILE = "tasks.txt"
 
-
 tasks = []
-
 next_task_id = 1
 
 
@@ -22,7 +19,7 @@ def load_tasks_from_file():
                 tasks.extend(loaded_tasks)
                 print(f"Загружено {len(tasks)} задач из {TASKS_FILE}")
 
-             if tasks:
+            if tasks:
                 next_task_id = max(task['id'] for task in tasks) + 1
             else:
                 next_task_id = 1
@@ -40,6 +37,7 @@ def load_tasks_from_file():
 
 
 def save_tasks_to_file():
+    """Сохраняет текущий список задач в файл tasks.txt."""
     try:
         with open(TASKS_FILE, 'w', encoding='utf-8') as f:
             json.dump(tasks, f, indent=4, ensure_ascii=False)
@@ -52,6 +50,7 @@ def save_tasks_to_file():
 
 @app.route("/tasks", methods=["POST"])
 def create_task():
+
     global next_task_id
     if not request.is_json:
         abort(400, description="Необходимо отправить JSON-данные.")
@@ -75,7 +74,7 @@ def create_task():
     tasks.append(new_task)
     next_task_id += 1
 
-    save_tasks_to_file()
+    save_tasks_to_file()  # Сохраняем после изменения
     return jsonify(new_task), 201  # 201 Created
 
 
@@ -95,7 +94,7 @@ def complete_task(task_id):
 
     if task_found:
         save_tasks_to_file()
-        return "", 200
+        return "", 200  # 200 OK с пустым телом
     else:
         abort(404, description=f"Задача с ID {task_id} не найдена.")
 
